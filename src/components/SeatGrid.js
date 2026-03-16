@@ -86,6 +86,7 @@ const SeatGrid = ({ availableSeats, occupiedSeats = [], selectedSeats, onSeatCli
             </div>
 
             {/* Seat Grid */}
+            <div className="seat-grid-wrapper">
             <div style={{
                 display: 'grid',
                 gap: '8px'
@@ -168,6 +169,7 @@ const SeatGrid = ({ availableSeats, occupiedSeats = [], selectedSeats, onSeatCli
                         })}
                     </div>
                 ))}
+            </div>
             </div>
 
             {/* Legend */}

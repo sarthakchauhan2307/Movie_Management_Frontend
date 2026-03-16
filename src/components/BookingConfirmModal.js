@@ -17,6 +17,7 @@ const BookingConfirmModal = ({
         <>
             {/* Backdrop */}
             <div
+                className="booking-confirm-modal"
                 style={{
                     position: 'fixed',
                     inset: 0,
@@ -46,7 +47,7 @@ const BookingConfirmModal = ({
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header with gradient */}
-                    <div style={{
+                    <div className="booking-confirm-modal-header" style={{
                         background: 'linear-gradient(135deg, var(--primary), #7c3aed)',
                         padding: '28px 32px',
                         position: 'relative'
@@ -114,7 +115,7 @@ const BookingConfirmModal = ({
                     </div>
 
                     {/* Body */}
-                    <div style={{ padding: '28px 32px' }}>
+                    <div className="booking-confirm-modal-body" style={{ padding: '28px 32px' }}>
                         {/* Selected Seats */}
                         <div style={{ marginBottom: '24px' }}>
                             <div style={{
@@ -236,7 +237,7 @@ const BookingConfirmModal = ({
                         </div>
 
                         {/* Action Buttons */}
-                        <div style={{
+                        <div className="booking-confirm-modal-actions" style={{
                             display: 'grid',
                             gridTemplateColumns: '1fr 1fr',
                             gap: '12px'

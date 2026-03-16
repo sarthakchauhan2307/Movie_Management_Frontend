@@ -115,10 +115,7 @@ const Register = () => {
                     maxWidth: '480px'
                 }}>
                     {/* Logo Section */}
-                    <div style={{
-                        textAlign: 'center',
-                        marginBottom: '48px'
-                    }}>
+                    <div className="auth-logo-section">
                         <div style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -147,14 +144,7 @@ const Register = () => {
                     </div>
 
                     {/* Register Card */}
-                    <div style={{
-                        background: 'rgba(20, 20, 30, 0.85)',
-                        backdropFilter: 'blur(30px)',
-                        borderRadius: '20px',
-                        padding: '48px 40px',
-                        boxShadow: '0 25px 80px rgba(0, 0, 0, 0.6)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)'
-                    }}>
+                    <div className="auth-card">
                         <h2 style={{
                             fontSize: '1.75rem',
                             fontWeight: '700',

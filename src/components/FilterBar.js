@@ -13,11 +13,7 @@ const FilterBar = ({ activeFilter, onFilterChange }) => {
         <div style={{
             background: 'var(--bg-secondary)',
             padding: '20px 0',
-            borderBottom: '1px solid var(--border)',
-            position: 'sticky',
-            top: '73px',
-            zIndex: 999,
-            backdropFilter: 'blur(10px)'
+            borderBottom: '1px solid var(--border)'
         }}>
             <div className="container">
                 {/* Status Filters */}

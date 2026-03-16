@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Calendar, Star } from 'lucide-react';
 
-const API_BASE_URL = 'https://localhost:7218';
+const API_BASE_URL = 'http://movieservice.runasp.net';
 
 const MovieCard = ({ movie, hasShows = false }) => {
     // Construct full poster URL
@@ -21,28 +21,29 @@ const MovieCard = ({ movie, hasShows = false }) => {
     };
 
     return (
-        <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none' }}>
+        <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', display: 'block', height: '100%', minWidth: 0 }}>
             <div className="card card-hover" style={{
                 cursor: 'pointer',
-                height: '100%'
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
             }}>
                 {/* Poster */}
                 <div style={{
                     position: 'relative',
-                    paddingTop: '150%',
+                    aspectRatio: '2/3',
                     background: 'var(--bg-secondary)',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    flexShrink: 0
                 }}>
                     <img
                         src={getPosterUrl()}
                         alt={movie.title}
                         style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
                             width: '100%',
                             height: '100%',
                             objectFit: 'cover',
+                            display: 'block',
                             transition: 'var(--transition)'
                         }}
                         onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
@@ -126,7 +127,12 @@ const MovieCard = ({ movie, hasShows = false }) => {
                 </div>
 
                 {/* Content */}
-                <div style={{ padding: '16px' }}>
+                <div style={{
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flex: 1
+                }}>
                     <h3 style={{
                         fontSize: '1.1rem',
                         fontWeight: '600',
@@ -141,20 +147,31 @@ const MovieCard = ({ movie, hasShows = false }) => {
 
                     {/* Genre */}
                     <div style={{
-                        marginBottom: '12px'
+                        marginBottom: '12px',
+                        minHeight: '24px'
                     }}>
-                        <span className="badge badge-primary">
+                        <span className="badge badge-primary" style={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: '100%',
+                            display: 'inline-block'
+                        }}>
                             {movie.genre}
                         </span>
                     </div>
 
-                    {/* Meta Info */}
+                    {/* Spacer to push meta to bottom */}
+                    <div style={{ flex: 1 }} />
+
+                    {/* Meta Info - pushed to bottom */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
                         color: 'var(--text-secondary)',
-                        fontSize: '0.85rem'
+                        fontSize: '0.85rem',
+                        marginTop: 'auto'
                     }}>
                         {movie.duration && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -173,9 +190,12 @@ const MovieCard = ({ movie, hasShows = false }) => {
                     {/* Languages (if available) */}
                     {movie.language && (
                         <div style={{
-                            marginTop: '12px',
+                            marginTop: '8px',
                             fontSize: '0.8rem',
-                            color: 'var(--text-muted)'
+                            color: 'var(--text-muted)',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
                         }}>
                             {movie.language}
                         </div>

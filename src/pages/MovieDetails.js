@@ -14,7 +14,7 @@ import {
     Play
 } from 'lucide-react';
 
-const API_BASE_URL = 'https://localhost:7218';
+const API_BASE_URL = 'http://movieservice.runasp.net';
 
 const MovieDetails = () => {
     const { id } = useParams();
@@ -179,16 +179,9 @@ const MovieDetails = () => {
                         <span>Back to Movies</span>
                     </Link>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'auto 1fr',
-                        gap: '40px',
-                        alignItems: 'flex-start'
-                    }}>
+                    <div className="movie-details-grid">
                         {/* Poster */}
-                        <div className="card" style={{
-                            width: '300px',
-                            padding: 0,
+                        <div className="card movie-details-poster" style={{
                             boxShadow: '0 20px 60px rgba(0,0,0,0.6)'
                         }}>
                             <img
@@ -205,18 +198,13 @@ const MovieDetails = () => {
                         </div>
 
                         {/* Movie Info */}
-                        <div>
-                            <h1 style={{
-                                fontSize: '3rem',
-                                fontWeight: '800',
-                                marginBottom: '16px',
-                                lineHeight: 1.1
-                            }}>
+                        <div className="movie-details-info">
+                            <h1 className="movie-details-title">
                                 {movie.title}
                             </h1>
 
                             {/* Meta Info */}
-                            <div style={{
+                            <div className="movie-details-meta" style={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 gap: '24px',
@@ -302,7 +290,7 @@ const MovieDetails = () => {
                             )}
 
                             {/* CTA Buttons */}
-                            <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap' }}>
+                            <div className="movie-details-cta" style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap' }}>
                                 <button
                                     className="btn btn-primary btn-lg"
                                     onClick={() => {

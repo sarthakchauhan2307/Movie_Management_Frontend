@@ -4,7 +4,7 @@ import { bookingAPI, movieAPI, showAPI } from '../services/api';
 import { CheckCircle, Download, Share2, Calendar, Clock, MapPin, Ticket } from 'lucide-react';
 
 
-const GATEWAY_BASE_URL = 'https://localhost:7218';
+const GATEWAY_BASE_URL = 'http://movieservice.runasp.net';
 
 // Helper function to format time from "HH:MM:SS" to "HH:MM AM/PM"
 const formatShowTime = (timeString) => {
@@ -168,7 +168,7 @@ const BookingConfirmation = () => {
                             padding: '24px',
                             borderBottom: '2px dashed var(--border)'
                         }}>
-                            <div style={{ display: 'flex', gap: '20px' }}>
+                            <div className="booking-confirm-movie-info">
                                 <img
                                     src={
                                         movie.posterUrl
@@ -235,10 +235,7 @@ const BookingConfirmation = () => {
 
                     {/* Booking Details */}
                     <div style={{ padding: '32px' }}>
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '24px',
+                        <div className="booking-details-grid" style={{
                             marginBottom: '32px'
                         }}>
                             <div>
@@ -368,11 +365,7 @@ const BookingConfirmation = () => {
                         </div>
 
                         {/* Action Buttons */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '12px'
-                        }}>
+                        <div className="booking-actions-grid">
                             <button
                                 className="btn btn-secondary"
                                 onClick={downloadTicket}

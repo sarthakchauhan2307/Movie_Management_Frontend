@@ -119,9 +119,9 @@ const Footer = () => {
                     <div className="footer-column">
                         <h4>Help & Support</h4>
                         <ul>
-                            <li><a href="#">About Us</a></li>
+                            <li><Link to="/about">About Us</Link></li>
                             <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">FAQs</a></li>
+                            <li><Link to="/about">FAQs</Link></li>
                             <li><a href="#">Terms & Conditions</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Refund Policy</a></li>

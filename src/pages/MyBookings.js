@@ -4,7 +4,7 @@ import { bookingAPI, movieAPI, showAPI, screenAPI, theatreAPI } from '../service
 import { Calendar, Clock, MapPin, QrCode, Ticket, Film, Download } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const GATEWAY_BASE_URL = 'https://localhost:7218';
+const GATEWAY_BASE_URL = 'http://movieservice.runasp.net';
 
 // Helper function to format time from "HH:MM:SS" to "HH:MM AM/PM"
 const formatShowTime = (timeString) => {
@@ -174,12 +174,7 @@ const MyBookings = () => {
         }}>
             <div className="container" style={{ padding: '40px 20px' }}>
                 {/* Header */}
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '32px'
-                }}>
+                <div className="my-bookings-header" style={{ marginBottom: '32px' }}>
                     <div>
                         <h1 style={{ marginBottom: '8px' }}>My Bookings</h1>
                         <p style={{ color: 'var(--text-secondary)' }}>
@@ -273,16 +268,12 @@ const MyBookings = () => {
                 ) : (
                     <div style={{ display: 'grid', gap: '24px' }}>
                         {filteredBookings.map(booking => (
-                            <div key={booking.bookingId} className="card card-hover" style={{
-                                padding: 0,
-                                display: 'grid',
-                                gridTemplateColumns: 'auto 1fr auto',
-                                overflow: 'hidden'
+                            <div key={booking.bookingId} className="card card-hover my-booking-card" style={{
+                                padding: 0
                             }}>
                                 {/* Movie Poster */}
                                 {booking.movie && (
-                                    <div style={{
-                                        width: '140px',
+                                    <div className="my-booking-poster" style={{
                                         background: 'var(--bg-secondary)'
                                     }}>
                                         <img
@@ -386,16 +377,7 @@ const MyBookings = () => {
                                 </div>
 
                                 {/* QR Code & Actions */}
-                                <div style={{
-                                    borderLeft: '2px dashed var(--border)',
-                                    padding: '24px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '12px',
-                                    minWidth: '180px'
-                                }}>
+                                <div className="my-booking-qr">
                                     {/* QR Code Image */}
                                     <div style={{
                                         width: '100px',

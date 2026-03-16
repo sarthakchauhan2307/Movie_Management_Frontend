@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { CityProvider } from './context/CityContext';
 import { AuthProvider } from './context/AuthContext';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationBanner from './components/NotificationBanner';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -13,9 +15,12 @@ import BookingConfirmation from './pages/BookingConfirmation';
 import MyBookings from './pages/MyBookings';
 import UserProfile from './pages/UserProfile';
 import UserMovieCollection from './pages/UserMovieCollection';
+import AllMovies from './pages/AllMovies';
+import AboutUs from './pages/AboutUs';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Admin imports
 import AdminLogin from './pages/admin/AdminLogin';
@@ -34,7 +39,10 @@ function App() {
     return (
         <AuthProvider>
             <CityProvider>
-                <Router>
+                <NotificationProvider>
+                    <Router>
+                        <NotificationBanner />
+                        <ScrollToTop />
                     <Routes>
                         {/* Login Routes */}
                         <Route path="/login" element={<Login />} />
@@ -114,6 +122,24 @@ function App() {
                                 </div>
                             </PrivateRoute>
                         } />
+                        <Route path="/movies" element={
+                            <PrivateRoute>
+                                <div className="App">
+                                    <Navbar />
+                                    <AllMovies />
+                                    <Footer />
+                                </div>
+                            </PrivateRoute>
+                        } />
+                        <Route path="/about" element={
+                            <PrivateRoute>
+                                <div className="App">
+                                    <Navbar />
+                                    <AboutUs />
+                                    <Footer />
+                                </div>
+                            </PrivateRoute>
+                        } />
 
                         {/* Admin Routes - Protected for Admin Only */}
                         <Route path="/admin" element={
@@ -133,6 +159,7 @@ function App() {
                         </Route>
                     </Routes>
                 </Router>
+                </NotificationProvider>
             </CityProvider>
         </AuthProvider>
     );

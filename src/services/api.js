@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getToken } from './authService';
 
 // Updated to use API Gateway
-const API_BASE_URL = 'https://localhost:7218/api';
+const API_BASE_URL = 'http://moviemanagementgateway.runasp.net/api';
 
 // Create axios instance with default config
 const api = axios.create({

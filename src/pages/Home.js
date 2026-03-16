@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { movieAPI, showAPI, screenAPI } from '../services/api';
 import MovieCard from '../components/MovieCard';
 import FilterBar from '../components/FilterBar';
@@ -220,28 +220,58 @@ const Home = () => {
                 padding: '60px 0 40px'
             }}>
                 <div className="container">
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '16px',
-                        marginBottom: '16px'
-                    }}>
-                        <Film size={40} color="var(--primary)" />
-                        <h1
-                            style={{
-                                fontSize: '2.5rem',
-                                fontWeight: '800',
-                                background: 'linear-gradient(135deg, var(--text-primary), var(--text-secondary))',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
+                    <div className="home-hero-header">
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px'
+                        }}>
+                            <Film size={40} color="var(--primary)" />
+                            <h1
+                                style={{
+                                    fontSize: '2.5rem',
+                                    fontWeight: '800',
+                                    background: 'linear-gradient(135deg, var(--text-primary), var(--text-secondary))',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                }}
+                            >
+                                {filters.status === 'coming-soon'
+                                    ? 'Coming Soon'
+                                    : filters.status === 'now-showing'
+                                        ? 'Now Showing'
+                                        : 'All Movies'}
+                            </h1>
+                        </div>
+                        <Link to="/movies" style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            color: 'var(--primary)',
+                            textDecoration: 'none',
+                            fontSize: '0.95rem',
+                            fontWeight: '600',
+                            padding: '8px 16px',
+                            borderRadius: 'var(--radius-md)',
+                            border: '1px solid var(--primary)',
+                            background: 'rgba(220, 38, 38, 0.08)',
+                            transition: 'var(--transition)'
+                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'var(--primary)';
+                                e.currentTarget.style.color = 'white';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 4px 16px rgba(220, 38, 38, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(220, 38, 38, 0.08)';
+                                e.currentTarget.style.color = 'var(--primary)';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = 'none';
                             }}
                         >
-                            {filters.status === 'coming-soon'
-                                ? 'Coming Soon'
-                                : filters.status === 'now-showing'
-                                    ? 'Now Showing'
-                                    : 'All Movies'}
-                        </h1>
+                            See All <ChevronRight size={18} />
+                        </Link>
                     </div>
                     <p style={{
                         color: 'var(--text-secondary)',
@@ -300,6 +330,7 @@ const Home = () => {
                         >
                             <ChevronRight size={24} />
                         </button>
+
                     </div>
                 )}
             </div>

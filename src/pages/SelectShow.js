@@ -3,6 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { movieAPI, showAPI, theatreAPI, screenAPI } from '../services/api';
 import { Calendar, MapPin, Clock, ArrowRight } from 'lucide-react';
 
+const API_BASE_URL = 'http://movieservice.runasp.net';
+
+const getPosterUrl = (posterUrl) => {
+    if (!posterUrl) return 'https://via.placeholder.com/400x600?text=No+Poster';
+    if (posterUrl.startsWith('http')) return posterUrl;
+    return `${API_BASE_URL}${posterUrl}`;
+};
+
 const SelectShow = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -159,9 +167,9 @@ const SelectShow = () => {
                 padding: '24px 0'
             }}>
                 <div className="container">
-                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    <div className="show-movie-header">
                         <img
-                            src={movie.posterUrl}
+                            src={getPosterUrl(movie.posterUrl)}
                             alt={movie.title}
                             style={{
                                 width: '80px',

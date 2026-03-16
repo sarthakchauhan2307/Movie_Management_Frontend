@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://localhost:7218/api';
+const API_BASE_URL = 'http://moviemanagementgateway.runasp.net/api';
 const TOKEN_KEY = 'jwt_token';
 const USER_KEY = 'user_info';
 

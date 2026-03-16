@@ -239,7 +239,7 @@ const UserProfile = () => {
                 )}
 
                 {/* Profile Card */}
-                <div className="card" style={{ padding: '32px' }}>
+                <div className="card profile-card" style={{ padding: '32px' }}>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -457,7 +457,7 @@ const UserProfile = () => {
 
                         {/* Action Buttons */}
                         {isEditing && (
-                            <div style={{
+                            <div className="profile-actions" style={{
                                 display: 'flex',
                                 gap: '12px',
                                 marginTop: '32px',

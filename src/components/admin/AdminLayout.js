@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
+import AdminBroadcaster from './AdminBroadcaster';
 import { ToastProvider } from './Toast';
 import '../../styles/admin.css';
 
@@ -62,6 +63,8 @@ const AdminLayout = () => {
                                 <span>🎬</span>
                                 Go to User Side
                             </a>
+
+                            <AdminBroadcaster />
 
                             <div className="header-user">
                                 <div className="user-avatar">A</div>

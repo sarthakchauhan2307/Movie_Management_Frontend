@@ -18,6 +18,14 @@ const formatShowTime = (timeString) => {
     return timeString;
 };
 
+const API_BASE_URL = 'http://movieservice.runasp.net';
+
+const getPosterUrl = (posterUrl) => {
+    if (!posterUrl) return 'https://via.placeholder.com/400x600?text=No+Poster';
+    if (posterUrl.startsWith('http')) return posterUrl;
+    return `${API_BASE_URL}${posterUrl}`;
+};
+
 const SelectSeats = () => {
     const { showId } = useParams();
     const navigate = useNavigate();
@@ -46,24 +54,50 @@ const SelectSeats = () => {
             const showData = await showAPI.getShowById(showId);
             setShow(showData);
 
-            // First get screen, then theatre
-            const screenData = await screenAPI.getScreenById(showData.screenId);
-            setScreen(screenData);
+            // First get screen
+            let screenData = null;
+            try {
+                screenData = await screenAPI.getScreenById(showData.screenId);
+                setScreen(screenData);
+            } catch (error) {
+                console.error('Error fetching screen:', error);
+            }
 
-            // Load related data
-            const [movieData, theatreData, seatsData] = await Promise.all([
-                movieAPI.getMovieById(showData.movieId),
-                theatreAPI.getTheatreById(screenData.theatreId),
-                showAPI.getAvailableSeats(showId)
-            ]);
+            // Load movie data (critical for page display)
+            try {
+                const movieData = await movieAPI.getMovieById(showData.movieId);
+                setMovie(movieData);
+            } catch (error) {
+                console.error('Error fetching movie:', error);
+            }
 
-            setMovie(movieData);
-            setTheatre(theatreData);
-            setAvailableSeats(seatsData || screenData.seatCount || 100);
+            // Load theatre data (non-critical, page can render without it)
+            if (screenData) {
+                try {
+                    const theatreData = await theatreAPI.getTheatreById(screenData.theatreId);
+                    setTheatre(theatreData);
+                } catch (error) {
+                    console.error('Error fetching theatre:', error);
+                }
+            }
 
-            // Load occupied seats for this show
-            const occupied = await bookingAPI.getOccupiedSeatsForShow(showId);
-            setOccupiedSeats(occupied);
+            // Load available seats (non-critical, fallback to screen seat count)
+            try {
+                const seatsData = await showAPI.getAvailableSeats(showId);
+                setAvailableSeats(seatsData || screenData?.seatCount || 100);
+            } catch (error) {
+                console.error('Error fetching available seats:', error);
+                setAvailableSeats(screenData?.seatCount || 100);
+            }
+
+            // Load occupied seats for this show (non-critical, fallback to empty)
+            try {
+                const occupied = await bookingAPI.getOccupiedSeatsForShow(showId);
+                setOccupiedSeats(occupied);
+            } catch (error) {
+                console.error('Error fetching occupied seats:', error);
+                setOccupiedSeats([]);
+            }
 
         } catch (error) {
             console.error('Error loading show details:', error);
@@ -154,7 +188,7 @@ const SelectSeats = () => {
         );
     }
 
-    if (!show || !movie) {
+    if (!show) {
         return (
             <div className="loader">
                 <h2 style={{ color: 'var(--error)' }}>Show not found</h2>
@@ -194,21 +228,23 @@ const SelectSeats = () => {
                         Back to Shows
                     </button>
 
-                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                        <img
-                            src={movie.posterUrl}
-                            alt={movie.title}
-                            style={{
-                                width: '60px',
-                                height: '90px',
-                                objectFit: 'cover',
-                                borderRadius: 'var(--radius-sm)'
-                            }}
-                        />
+                    <div className="seat-header-info">
+                        {movie && (
+                            <img
+                                src={getPosterUrl(movie.posterUrl)}
+                                alt={movie.title}
+                                style={{
+                                    width: '60px',
+                                    height: '90px',
+                                    objectFit: 'cover',
+                                    borderRadius: 'var(--radius-sm)'
+                                }}
+                            />
+                        )}
                         <div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                                <h2 style={{ margin: 0 }}>{movie.title}</h2>
-                                {new Date(movie.releaseDate) > new Date() && (
+                                <h2 style={{ margin: 0 }}>{movie?.title || 'Movie'}</h2>
+                                {movie && new Date(movie.releaseDate) > new Date() && (
                                     <span style={{
                                         padding: '4px 12px',
                                         background: 'var(--warning)',
@@ -249,11 +285,7 @@ const SelectSeats = () => {
 
             {/* Seat Selection */}
             <div className="container" style={{ padding: '40px 20px' }}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 400px',
-                    gap: '40px'
-                }}>
+                <div className="seats-page-grid">
                     {/* Left: Seat Grid */}
                     <div className="card" style={{ padding: '32px' }}>
                         <h3 style={{ marginBottom: '24px', textAlign: 'center' }}>
