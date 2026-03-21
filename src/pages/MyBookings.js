@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { bookingAPI, movieAPI, showAPI, screenAPI, theatreAPI } from '../services/api';
 import { Calendar, Clock, MapPin, QrCode, Ticket, Film, Download } from 'lucide-react';
@@ -20,18 +20,13 @@ const formatShowTime = (timeString) => {
 
 const MyBookings = () => {
     const { user } = useAuth();
-    const [bookings, setBookings] = useState([]);
     const [enrichedBookings, setEnrichedBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('upcoming'); // upcoming or past
     const [qrCodes, setQrCodes] = useState({}); // Store QR code URLs by booking ID
     const [downloadingPdf, setDownloadingPdf] = useState({}); // Track PDF download state by booking ID
 
-    useEffect(() => {
-        loadBookings();
-    }, []);
-
-    const loadBookings = async () => {
+    const loadBookings = useCallback(async () => {
         try {
             setLoading(true);
             const bookingsData = await bookingAPI.getUserBookings(user.userId); // Use authenticated user ID
@@ -87,7 +82,6 @@ const MyBookings = () => {
             // Sort enriched bookings by bookingId (latest first)
             enriched.sort((a, b) => b.bookingId - a.bookingId);
             setEnrichedBookings(enriched);
-            setBookings(bookingsData);
 
             // Load QR codes for all bookings
             loadQrCodes(enriched);
@@ -97,7 +91,12 @@ const MyBookings = () => {
         } finally {
             setLoading(false);
         }
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user.userId]);
+
+    useEffect(() => {
+        loadBookings();
+    }, [loadBookings]);
 
     const loadQrCodes = async (bookings) => {
         const qrCodeMap = {};

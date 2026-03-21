@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { Mail, Lock, Shield, Loader } from 'lucide-react';
 
 const AdminLogin = () => {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''

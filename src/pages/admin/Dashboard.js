@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import StatsCard from '../../components/admin/StatsCard';
 import MovieCollectionChart from '../../components/admin/MovieCollectionChart';
 import { adminAnalyticsAPI } from '../../services/adminApi';
@@ -16,11 +16,7 @@ const Dashboard = () => {
         recentBookings: [],
     });
 
-    useEffect(() => {
-        loadDashboardData();
-    }, [dateRange]);
-
-    const loadDashboardData = async () => {
+    const loadDashboardData = useCallback(async () => {
         try {
             setLoading(true);
             const data = await adminAnalyticsAPI.getDashboardStats(dateRange);
@@ -30,7 +26,11 @@ const Dashboard = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [dateRange]);
+
+    useEffect(() => {
+        loadDashboardData();
+    }, [loadDashboardData]);
 
     const getDateRangeLabel = () => {
         switch (dateRange) {

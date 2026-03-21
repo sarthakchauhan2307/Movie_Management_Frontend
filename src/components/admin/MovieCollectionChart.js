@@ -9,6 +9,7 @@ const MovieCollectionChart = () => {
 
     useEffect(() => {
         loadGoogleCharts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadGoogleCharts = () => {

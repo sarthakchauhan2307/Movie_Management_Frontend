@@ -22,10 +22,12 @@ const AllMovies = () => {
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         applyFilters();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [movies, filters, selectedCity, movieCityMap, shows]);
 
     const loadData = async () => {

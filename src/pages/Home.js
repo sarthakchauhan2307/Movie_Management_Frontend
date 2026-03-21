@@ -28,11 +28,60 @@ const Home = () => {
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const applyFilters = useCallback(() => {
+        let filtered = [...movies];
+
+        if (selectedCity) {
+            filtered = filtered.filter(movie => {
+                const availableCities = movieCityMap[movie.movieId];
+                return availableCities && availableCities.has(selectedCity);
+            });
+        }
+
+        const searchQuery = searchParams.get('search');
+        if (searchQuery) {
+            filtered = filtered.filter(movie =>
+                movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
+        if (filters.status === 'now-showing') {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            filtered = filtered.filter(movie => {
+                return shows.some(show => {
+                    if (show.movieId !== movie.movieId) return false;
+                    const showDate = new Date(show.showDate);
+                    showDate.setHours(0, 0, 0, 0);
+                    return showDate >= today;
+                });
+            });
+        } else if (filters.status === 'coming-soon') {
+            filtered = filtered.filter(movie => new Date(movie.releaseDate) > new Date());
+        }
+
+        if (filters.genre) {
+            filtered = filtered.filter(movie =>
+                movie.genre && movie.genre.toLowerCase().includes(filters.genre.toLowerCase())
+            );
+        }
+
+        filtered.sort((a, b) => {
+            const dateA = new Date(a.releaseDate);
+            const dateB = new Date(b.releaseDate);
+            return dateB - dateA;
+        });
+
+        setFilteredMovies(filtered);
+    }, [movies, filters, searchParams, selectedCity, movieCityMap, shows]);
 
     useEffect(() => {
         applyFilters();
-    }, [movies, filters, searchParams, selectedCity, movieCityMap, shows]);
+    }, [applyFilters]);
 
     // Update scroll button state
     const updateScrollButtons = useCallback(() => {
@@ -110,53 +159,7 @@ const Home = () => {
         }
     };
 
-    const applyFilters = () => {
-        let filtered = [...movies];
 
-        if (selectedCity) {
-            filtered = filtered.filter(movie => {
-                const availableCities = movieCityMap[movie.movieId];
-                return availableCities && availableCities.has(selectedCity);
-            });
-        }
-
-        const searchQuery = searchParams.get('search');
-        if (searchQuery) {
-            filtered = filtered.filter(movie =>
-                movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-        }
-
-        if (filters.status === 'now-showing') {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            filtered = filtered.filter(movie => {
-                return shows.some(show => {
-                    if (show.movieId !== movie.movieId) return false;
-                    const showDate = new Date(show.showDate);
-                    showDate.setHours(0, 0, 0, 0);
-                    return showDate >= today;
-                });
-            });
-        } else if (filters.status === 'coming-soon') {
-            filtered = filtered.filter(movie => new Date(movie.releaseDate) > new Date());
-        }
-
-        if (filters.genre) {
-            filtered = filtered.filter(movie =>
-                movie.genre && movie.genre.toLowerCase().includes(filters.genre.toLowerCase())
-            );
-        }
-
-        filtered.sort((a, b) => {
-            const dateA = new Date(a.releaseDate);
-            const dateB = new Date(b.releaseDate);
-            return dateB - dateA;
-        });
-
-        setFilteredMovies(filtered);
-    };
 
     const handleFilterChange = (type, value) => {
         setFilters(prev => ({

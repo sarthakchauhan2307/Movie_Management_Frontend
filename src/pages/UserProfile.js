@@ -54,6 +54,7 @@ const UserProfile = () => {
         };
 
         fetchUserData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.userId]);
 
     const validateForm = () => {
@@ -130,7 +131,7 @@ const UserProfile = () => {
                 updateData.password = 'unchanged';
             }
 
-            const response = await userAPI.updateUser(userData.userId, updateData);
+            await userAPI.updateUser(userData.userId, updateData);
 
             // Update local state with new data
             const updatedUserData = {

@@ -29,6 +29,7 @@ const MovieReviewSection = ({ movieId }) => {
         const user = getUserInfo();
         setUserInfo(user);
         loadReviews();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [movieId]);
 
     const loadReviews = async () => {

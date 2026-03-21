@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { showAPI, movieAPI, theatreAPI, screenAPI, bookingAPI } from '../services/api';
 import SeatGrid from '../components/SeatGrid';
@@ -43,11 +43,7 @@ const SelectSeats = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [errorModal, setErrorModal] = useState({ show: false, message: '' });
 
-    useEffect(() => {
-        loadShowDetails();
-    }, [showId]);
-
-    const loadShowDetails = async () => {
+    const loadShowDetails = useCallback(async () => {
         try {
             setLoading(true);
 
@@ -104,7 +100,13 @@ const SelectSeats = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [showId]);
+
+    useEffect(() => {
+        loadShowDetails();
+    }, [loadShowDetails]);
+
+
 
     const handleSeatClick = (seatId) => {
         // Prevent selection of occupied seats
@@ -124,14 +126,8 @@ const SelectSeats = () => {
     const handleBooking = async () => {
         if (selectedSeats.length === 0) return;
 
-        let createdBookingId = null;
-
         try {
             setProcessing(true);
-
-            const seatPrice = show.price || 150;
-            const convenienceFee = selectedSeats.length * 20;
-            const totalAmount = (selectedSeats.length * seatPrice) + convenienceFee;
 
             // Step 1: Create booking with seats in one call
             const bookingData = {
@@ -142,7 +138,6 @@ const SelectSeats = () => {
 
             console.log('Creating booking with seats...', bookingData);
             const booking = await bookingAPI.createBookingWithSeats(bookingData);
-            createdBookingId = booking.bookingId;
 
             if (!booking || !booking.bookingId) {
                 throw new Error('Failed to create booking');

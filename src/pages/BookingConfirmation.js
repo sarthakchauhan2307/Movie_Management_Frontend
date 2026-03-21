@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { bookingAPI, movieAPI, showAPI } from '../services/api';
-import { CheckCircle, Download, Share2, Calendar, Clock, MapPin, Ticket } from 'lucide-react';
+import { CheckCircle, Download, Share2, Calendar, Clock, Ticket } from 'lucide-react';
 
 
 const GATEWAY_BASE_URL = 'http://movieservice.runasp.net';
@@ -30,6 +30,7 @@ const BookingConfirmation = () => {
 
     useEffect(() => {
         loadBookingDetails();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bookingId]);
 
     const loadBookingDetails = async () => {

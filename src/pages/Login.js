@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { login } from '../services/authService';
 import { Mail, Lock, Film, Loader, ArrowRight } from 'lucide-react';
 
 const Login = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const [formData, setFormData] = useState({
         email: '',

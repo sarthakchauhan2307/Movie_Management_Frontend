@@ -129,7 +129,7 @@ export const isAdmin = () => {
     return user?.role === 'Admin';
 };
 
-export default {
+const authService = {
     login,
     register,
     logout,
@@ -139,4 +139,6 @@ export default {
     isAdmin,
     isTokenExpired
 };
+
+export default authService;
 

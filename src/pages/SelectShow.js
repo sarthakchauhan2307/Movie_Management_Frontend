@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { movieAPI, showAPI, theatreAPI, screenAPI } from '../services/api';
-import { Calendar, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, Clock } from 'lucide-react';
 
 const API_BASE_URL = 'http://movieservice.runasp.net';
 
@@ -16,7 +16,7 @@ const SelectShow = () => {
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
     const [shows, setShows] = useState([]);
-    const [theatres, setTheatres] = useState({});
+    const [, setTheatres] = useState({});
     const [screens, setScreens] = useState({});
     const [loading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState(0);
@@ -33,11 +33,7 @@ const SelectShow = () => {
         };
     });
 
-    useEffect(() => {
-        loadData();
-    }, [id]);
-
-    const loadData = async () => {
+    const loadData = useCallback(async () => {
         try {
             setLoading(true);
 
@@ -74,7 +70,11 @@ const SelectShow = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     const getShowsForDate = () => {
         const selected = dates[selectedDate].fullDate;

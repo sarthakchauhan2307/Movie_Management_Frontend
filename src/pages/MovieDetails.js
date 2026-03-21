@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { movieAPI, showAPI } from '../services/api';
 import TrailerPlayer from '../components/TrailerPlayer';
@@ -27,17 +27,39 @@ const MovieDetails = () => {
     const [checkingShows, setCheckingShows] = useState(false);
     const [showNoShowsModal, setShowNoShowsModal] = useState(false);
 
-    useEffect(() => {
-        loadMovie();
+    const checkShowAvailability = useCallback(async () => {
+        try {
+            setCheckingShows(true);
+            const shows = await showAPI.getShowsByMovieId(id);
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const tenDaysLater = new Date();
+            tenDaysLater.setDate(tenDaysLater.getDate() + 10);
+            tenDaysLater.setHours(23, 59, 59, 999);
+
+            const upcomingShows = shows.filter(show => {
+                const showDate = new Date(show.showDate);
+                showDate.setHours(0, 0, 0, 0);
+                return showDate >= today && showDate <= tenDaysLater;
+            });
+
+            setHasUpcomingShows(upcomingShows.length > 0);
+        } catch (err) {
+            console.error('Failed to check show availability:', err);
+            setHasUpcomingShows(true);
+        } finally {
+            setCheckingShows(false);
+        }
     }, [id]);
 
-    const loadMovie = async () => {
+    const loadMovie = useCallback(async () => {
         try {
             setLoading(true);
             const data = await movieAPI.getMovieById(id);
             setMovie(data);
             setError(null);
-            // Check show availability after movie is loaded
             await checkShowAvailability();
         } catch (err) {
             console.error('Failed to load movie:', err);
@@ -45,37 +67,11 @@ const MovieDetails = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, checkShowAvailability]);
 
-    const checkShowAvailability = async () => {
-        try {
-            setCheckingShows(true);
-            const shows = await showAPI.getShowsByMovieId(id);
-
-            // Check if there are any shows in the next 10 days
-            // Normalize dates to midnight to properly compare dates without time
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set to midnight
-
-            const tenDaysLater = new Date();
-            tenDaysLater.setDate(tenDaysLater.getDate() + 10);
-            tenDaysLater.setHours(23, 59, 59, 999); // Set to end of day
-
-            const upcomingShows = shows.filter(show => {
-                const showDate = new Date(show.showDate);
-                showDate.setHours(0, 0, 0, 0); // Normalize to midnight for comparison
-                return showDate >= today && showDate <= tenDaysLater;
-            });
-
-            setHasUpcomingShows(upcomingShows.length > 0);
-        } catch (err) {
-            console.error('Failed to check show availability:', err);
-            // On error, assume shows are available to avoid blocking users
-            setHasUpcomingShows(true);
-        } finally {
-            setCheckingShows(false);
-        }
-    };
+    useEffect(() => {
+        loadMovie();
+    }, [loadMovie]);
 
     // Construct full poster URL
     const getPosterUrl = (posterUrl) => {

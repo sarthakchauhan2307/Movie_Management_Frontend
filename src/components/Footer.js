@@ -56,16 +56,16 @@ const Footer = () => {
 
                         {/* Social Media */}
                         <div className="footer-social">
-                            <a href="#" aria-label="Facebook" title="Facebook">
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
                                 <Facebook size={18} />
                             </a>
-                            <a href="#" aria-label="Twitter" title="Twitter">
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter">
                                 <Twitter size={18} />
                             </a>
-                            <a href="#" aria-label="Instagram" title="Instagram">
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
                                 <Instagram size={18} />
                             </a>
-                            <a href="#" aria-label="YouTube" title="YouTube">
+                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
                                 <Youtube size={18} />
                             </a>
                         </div>
@@ -95,9 +95,9 @@ const Footer = () => {
                             <li><Link to="/my-bookings">My Bookings</Link></li>
                             <li><Link to="/collections">Box Office Collection</Link></li>
                             <li><Link to="/profile">My Profile</Link></li>
-                            <li><a href="#">Offers & Promotions</a></li>
-                            <li><a href="#">Gift Cards</a></li>
-                            <li><a href="#">Corporate Bookings</a></li>
+                            <li><Link to="/">Offers & Promotions</Link></li>
+                            <li><Link to="/">Gift Cards</Link></li>
+                            <li><Link to="/">Corporate Bookings</Link></li>
                         </ul>
                     </div>
 
@@ -109,9 +109,9 @@ const Footer = () => {
                             <li><Link to="/">Coming Soon</Link></li>
                             <li><Link to="/">Top Rated</Link></li>
                             <li><Link to="/">New Releases</Link></li>
-                            <li><a href="#">Movies in Hindi</a></li>
-                            <li><a href="#">Movies in English</a></li>
-                            <li><a href="#">Movies in Telugu</a></li>
+                            <li><Link to="/movies">Movies in Hindi</Link></li>
+                            <li><Link to="/movies">Movies in English</Link></li>
+                            <li><Link to="/movies">Movies in Telugu</Link></li>
                         </ul>
                     </div>
 
@@ -120,12 +120,12 @@ const Footer = () => {
                         <h4>Help & Support</h4>
                         <ul>
                             <li><Link to="/about">About Us</Link></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><Link to="/about">Contact Us</Link></li>
                             <li><Link to="/about">FAQs</Link></li>
-                            <li><a href="#">Terms & Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Refund Policy</a></li>
-                            <li><a href="#">Sitemap <ExternalLink size={12} /></a></li>
+                            <li><Link to="/about">Terms & Conditions</Link></li>
+                            <li><Link to="/about">Privacy Policy</Link></li>
+                            <li><Link to="/about">Refund Policy</Link></li>
+                            <li><Link to="/about">Sitemap <ExternalLink size={12} /></Link></li>
                         </ul>
                     </div>
                 </div>
@@ -141,10 +141,10 @@ const Footer = () => {
                         in India.
                     </p>
                     <div className="footer-bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Use</a>
-                        <a href="#">Cookie Policy</a>
-                        <a href="#">Disclaimer</a>
+                        <Link to="/about">Privacy Policy</Link>
+                        <Link to="/about">Terms of Use</Link>
+                        <Link to="/about">Cookie Policy</Link>
+                        <Link to="/about">Disclaimer</Link>
                     </div>
                 </div>
             </div>
